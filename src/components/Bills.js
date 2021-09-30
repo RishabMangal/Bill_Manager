@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import Bill from "./Bill";
 const Bills = (props) => {
   const [category, setCat] = useState("");
+  const [budget, setBud] = useState(5000);
   const [billsList, setBills] = useState([...props.billsList]);
   const filterBills = () => {
     if (category) {
@@ -10,8 +11,36 @@ const Bills = (props) => {
       setBills([...temp]);
     } else setBills([...props.billsList]);
   };
+
+  useEffect(() => {
+    let sorted = [...props.billsList];
+    sorted.sort((a, b) => a.amount - b.amount);
+    let total = 0;
+    sorted.forEach((bill, i) => {
+      if (total + parseInt(bill.amount) > budget) {
+        sorted[i] = { ...bill, shouldBePaid: true };
+      } else {
+        sorted[i] = { ...bill, shouldBePaid: false };
+      }
+      total += parseInt(bill.amount);
+    });
+    setBills([...sorted]);
+    console.table(sorted);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [budget]);
+
   return (
     <div>
+      <div className="m-4">
+        <div>Budget : </div>
+        <div>
+          <input
+            value={budget}
+            onChange={(e) => setBud(e.target.value)}
+            placeholder={"budget"}
+          ></input>
+        </div>
+      </div>
       <div className="m-4">
         <div>Filter By : </div>
         <div>
@@ -36,7 +65,10 @@ const Bills = (props) => {
         </thead>
         <tbody>
           {billsList?.map((bill, i) => (
-            <tr key={bill.id}>
+            <tr
+              key={bill.id}
+              className={`${bill?.shouldBePaid ? "bg-warning" : ""}`}
+            >
               <Bill {...bill} {...props}></Bill>
             </tr>
           ))}
