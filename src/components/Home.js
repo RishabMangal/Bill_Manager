@@ -1,5 +1,6 @@
 import React from "react";
 import Bills from "./Bills";
+import MonthlyChart from "./MonthlyChart";
 
 const Home = (props) => {
   return (
@@ -11,6 +12,9 @@ const Home = (props) => {
         Add Bill
       </button>
       <Bills {...props}></Bills>
+      <div className="p-4 container">
+        <MonthlyChart></MonthlyChart>
+      </div>
     </div>
   );
 };
