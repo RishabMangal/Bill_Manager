@@ -25,7 +25,15 @@ const Bills = (props) => {
           </button>
         </div>
       </div>
-      <table className="table">
+      <table className="table table-center text-center">
+        <thead>
+          <tr>
+            {Object.keys(props.billsList[0]).map((key, i) => (
+              <th key={i}>{key}</th>
+            ))}
+            <th>Actions</th>
+          </tr>
+        </thead>
         <tbody>
           {billsList?.map((bill, i) => (
             <tr key={bill.id}>
