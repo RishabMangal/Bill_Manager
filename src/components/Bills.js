@@ -27,7 +27,7 @@ const Bills = (props) => {
     setBills([...sorted]);
     console.table(sorted);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [budget]);
+  }, [budget, props?.billsList]);
 
   return (
     <div>
@@ -57,9 +57,11 @@ const Bills = (props) => {
       <table className="table table-center text-center">
         <thead>
           <tr>
-            {Object.keys(props.billsList[0]).map((key, i) => (
-              <th key={i}>{key}</th>
-            ))}
+            {props?.billsList?.length
+              ? Object.keys(props?.billsList[0])?.map((key, i) => (
+                  <th key={i}>{key}</th>
+                ))
+              : null}
             <th>Actions</th>
           </tr>
         </thead>
